@@ -34,10 +34,12 @@ function addPictures (gifData) {
   })
 }
 
-axios.get('http://localhost:3000/gifs').then(response => {
+function getPictures() {
+  axios.get('http://localhost:3000/gifs').then(response => {
   // gets the initial data
   addPictures(response.data)
 })
+}
 
 editSubmit.addEventListener('click', (e) => {
   // submits the put request to edit a gif
@@ -49,7 +51,7 @@ editSubmit.addEventListener('click', (e) => {
     url
   }).then((resp) => {
     console.log(resp)
-    addPictures(resp.data)
+    getPictures()
     $('#modal-edit').modal('close')
   })
 })
@@ -63,18 +65,19 @@ submit.addEventListener('click', (e) => {
     name,
     url
   }).then((resp) => {
-    addPictures(resp.data)
+    getPictures()
     $('#modal-create').modal('close')
   })
 })
 
 deleteButton.addEventListener('click', (e) => {
   // deletes an image
-  axios.delete(`http://localhost:3000/gifs/${currentlyEditing}`).then((resp) => {
-    addPictures(resp.data)
+  axios.delete(`http://localhost:3000/gifs/${currentlyEditing}`).then(() => {
+    getPictures()
     $('#modal-edit').modal('close')
   })
 })
 
 // initializes modal package
 $('.modal').modal()
+getPictures()
